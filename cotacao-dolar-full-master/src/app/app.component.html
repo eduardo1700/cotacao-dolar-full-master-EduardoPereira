@@ -1,0 +1,37 @@
+<div class="header mt-4">
+  <h1>Cotação do Dólar - {{ cotacaoAtual }}</h1>
+</div>
+
+<div class="buscarPorPeriodo">
+  <h2>Histórico de Cotações</h2>
+  <label class="dataInicial" for="dataInicial">Data inicial:</label>
+  <input id="dataInicial" type="date" name="dataInicial" #dataInicial>
+  <label class="dataFinal" for="dataFinal">Data final:</label>
+  <input id="dataFinal" type="date" name="dataFinal" #dataFinal>
+  <button mat-raised-button color="primary" type="submit" class="btnPesquisar"
+    (click)="getCotacaoPorPeriodo(dataInicial.value, dataFinal.value)"> Pesquisar </button>
+</div>
+
+<div class="mt-3">
+  <div class="filtroCotacoes">
+    <label for="mostrarMenores">
+      <input id="mostrarMenores" type="checkbox" (change)="toggleCotacoesMenores()"> Mostrar apenas cotações menores que a atual
+    </label>
+  </div>
+  <ul class="listaHistoricoCotacoes">
+    <li class="listaHistoricoCotacoesItem">
+      <span class="historicoDeCotacoesItemInfo">Data-Hora</span>
+      <span class="historicoDeCotacoesItemInfo">Preço</span>
+      <span class="historicoDeCotacoesItemInfo">Diferença</span>
+    </li>
+    <div *ngFor="let item of cotacaoPorPeriodoLista">
+      <ng-container *ngIf="!mostrarCotacoesMenores || calcularDiferenca(item.preco) >= 0">
+        <li class="listaHistoricoCotacoesItem">
+          <span class="historicoDeCotacoesItemInfo">{{ item.data }}-{{ item.hora }}</span>
+          <span class="historicoDeCotacoesItemInfo">{{ item.preco }}</span>
+          <span class="historicoDeCotacoesItemInfo">{{ calcularDiferenca(item.preco) }}</span>
+        </li>
+      </ng-container>
+    </div>
+  </ul>
+</div>
